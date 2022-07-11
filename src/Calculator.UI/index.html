@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Calculator</title>
+</head>
+<body>
+    <div id="sum">
+        <div id="sum-title">Sum:</div>
+        <span>Left item: <input id="sum-left-item"/></span>
+        <span>Right itme: <input id="sum-right-item"/></span>
+        <button id="sum-button" onclick="javascript:sum()">Calculate</button>
+        <div id="sum-result-title">Result: <span id="sum-result"></span></div>
+    </div>
+
+    <div id="subtract">
+        <div id="subtract-title">Subtract:</div>
+        <span>Left item: <input id="subtract-left-item"/></span>
+        <span>Right itme: <input id="subtract-right-item"/></span>
+        <button id="subtract-button" onclick="javascript:subtract()">Calculate</button>
+        <div id="subtract-result-title">Result: <span id="subtract-result"></span></div>
+    </div>
+
+    <div id="divide">
+        <div id="divide-title">Divide:</div>
+        <span>Left item: <input id="divide-left-item"/></span>
+        <span>Right itme: <input id="divide-right-item"/></span>
+        <button id="divide-button" onclick="javascript:divide()">Calculate</button>
+        <div id="divide-result-title">Result: <span id="divide-result"></span></div>
+    </div>
+
+    <div id="multiply">
+        <div id="multiply-title">Multiply:</div>
+        <span>Left item: <input id="multiply-left-item"/></span>
+        <span>Right itme: <input id="multiply-right-item"/></span>
+        <button id="multiply-button" onclick="javascript:multiply()">Calculate</button>
+        <div id="multiply-result-title">Result: <span id="multiply-result"></span></div>
+    </div>
+    <!--https://localhost:7042-->
+</body>
+<script>
+    async function sum() {
+        await executeRequest('sum');
+    }
+
+    async function subtract() {
+        await executeRequest('subtract');
+    }
+
+    async function divide() {
+        await executeRequest('divide');
+    }
+
+    async function multiply() {
+        await executeRequest('multiply');
+    }
+
+    async function executeRequest(operator) {
+        let leftItemElement = document.getElementById(`${operator}-left-item`);
+        let rightItemElement = document.getElementById(`${operator}-right-item`);
+
+        let resultResponse = await fetch(`https://localhost:7042/calculator/${operator}`, {
+            method: 'POST',
+            body: `{ "LeftItem": "${leftItemElement.value}", "RightItem": "${rightItemElement.value}" }`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'text/plain'
+            }
+        });
+
+        let result = await resultResponse.json();
+
+        let resultElement = document.getElementById(`${operator}-result`);
+        resultElement.innerText = result.result;
+    }
+</script>
+</html>
