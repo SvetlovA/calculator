@@ -60,9 +60,9 @@
         let leftItemElement = document.getElementById(`${operator}-left-item`);
         let rightItemElement = document.getElementById(`${operator}-right-item`);
 
-        let resultResponse = await fetch(`https://localhost:7042/calculator/${operator}`, {
+        let resultResponse = await fetch(`https://localhost:7042/calculator/calculate`, {
             method: 'POST',
-            body: `{ "LeftItem": "${leftItemElement.value}", "RightItem": "${rightItemElement.value}" }`,
+            body: `{ "LeftItem": "${leftItemElement.value}", "RightItem": "${rightItemElement.value}", "Operator": "${operator}" }`,
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'text/plain'

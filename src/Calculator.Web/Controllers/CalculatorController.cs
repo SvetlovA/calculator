@@ -1,5 +1,5 @@
 using Calculator.Business.Factories;
-using Calculator.Business.Operators;
+using Calculator.Business.Models;
 using Calculator.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,36 +16,16 @@ namespace Calculator.Web.Controllers
             _operatorsFactory = operatorsFactory;
         }
 
-        [HttpPost("Sum")]
-        public CalculatorResponse Sum(CalculatorRequest calculatorRequest)
-        {
-            var calculatorOperator = _operatorsFactory.CreateSumOperator();
-            return GetCalculatorResponse(calculatorOperator, calculatorRequest);
-        }
+        [HttpPost("Calculate")]
+        public CalculatorResponse Calculate(CalculatorRequest calculatorRequest) =>
+            GetCalculatorResponse(calculatorRequest);
 
-        [HttpPost("Subtract")]
-        public CalculatorResponse Subtract(CalculatorRequest calculatorRequest)
+        private CalculatorResponse GetCalculatorResponse(CalculatorRequest calculatorRequest)
         {
-            var calculatorOperator = _operatorsFactory.CreateSubtractionOperator();
-            return GetCalculatorResponse(calculatorOperator, calculatorRequest);
-        }
+            var calculatorOperatorType = Enum.Parse<Operators>(calculatorRequest.Operator);
 
-        [HttpPost("Divide")]
-        public CalculatorResponse Divide(CalculatorRequest calculatorRequest)
-        {
-            var calculatorOperator = _operatorsFactory.CreateDivisionOperator();
-            return GetCalculatorResponse(calculatorOperator, calculatorRequest);
-        }
+            var calculatorOperator = _operatorsFactory.CreateOperator(calculatorOperatorType);
 
-        [HttpPost("Multiply")]
-        public CalculatorResponse Multiply(CalculatorRequest calculatorRequest)
-        {
-            var calculatorOperator = _operatorsFactory.CreateMultiplicationOperator();
-            return GetCalculatorResponse(calculatorOperator, calculatorRequest);
-        }
-
-        private static CalculatorResponse GetCalculatorResponse(IOperator calculatorOperator, CalculatorRequest calculatorRequest)
-        {
             var leftItem = decimal.Parse(calculatorRequest.LeftItem);
             var rightItem = decimal.Parse(calculatorRequest.RightItem);
 

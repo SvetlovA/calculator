@@ -4,4 +4,5 @@ public class CalculatorRequest
 {
     public string LeftItem { get; set; }
     public string RightItem { get; set; }
+    public string Operator { get; set; }
 }

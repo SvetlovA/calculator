@@ -4,8 +4,5 @@ namespace Calculator.Business.Factories;
 
 public interface IOperatorsFactory
 {
-    IOperator CreateSumOperator();
-    IOperator CreateSubtractionOperator();
-    IOperator CreateDivisionOperator();
-    IOperator CreateMultiplicationOperator();
+    IOperator CreateOperator(Models.Operators operatorName);
 }
